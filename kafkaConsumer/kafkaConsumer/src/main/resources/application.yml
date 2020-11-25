@@ -1,0 +1,21 @@
+server:
+  port: 8082
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      # Configures the Spring Kafka ErrorHandlingDeserializer that delegates to the 'real' deserializers
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      group-id: group1
+      auto-offset-reset: earliest
+      listener:
+        missing-topics-fatal: false
+      properties:
+      # Delegate deserializers
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+        spring.json.value.default.type: com.system27.kafkaConsumer.Model.Person
+        spring.json.type.mapping: "com.system27.kafkaProducer.Model.Person : com.system27.kafkaConsumer.Model.Person"
+        spring.json.trusted.packages: "*"
+
